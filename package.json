@@ -1,0 +1,25 @@
+{
+  "name": "react-tutorial",
+  "version": "0.0.1",
+  "description": "A data grid tutorial using React.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kellyjandrews/react-tutorial.git"
+  },
+  "author": "Kelly J Andrews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kellyjandrews/react-tutorial/issues"
+  },
+  "homepage": "https://github.com/kellyjandrews/react-tutorial",
+  "devDependencies": {
+    "babelify": "^5.0.4",
+    "bootstrap": "^3.3.4",
+    "browser-sync": "^2.5.2",
+    "browserify": "^9.0.4",
+    "gulp": "^3.8.11",
+    "jquery": "^2.1.3",
+    "react": "^0.13.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
