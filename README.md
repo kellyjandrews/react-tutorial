@@ -6,9 +6,12 @@ If you would like to run this example, clone the repo to your computer.
 
 ```
 $ git clone git@github.com:kellyjandrews/react-tutorial.git
+```
 or
+```
 $ git clone https://github.com/kellyjandrews/react-tutorial.git
-
+```
+```
 $ cd react-tutorial && npm install && gulp
 ```
 
