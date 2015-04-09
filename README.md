@@ -1,4 +1,4 @@
-#React Tutorial
+#React Data Grid
 
 This is a data grid built specifically for a tutorial series on my [blog](http://www.kellyjandrews.com/).
 
@@ -15,7 +15,7 @@ $ cd react-tutorial && npm install && gulp
 Chrome should open a browser window with the data grid loaded.  
 
 
-####Data Grid Tutorials
+##React Data Grid Tutorials
 1. [React - Up and Running](http://www.kellyjandrews.com/2015/03/30/react-up-and-running.html)
 2. [Modular React Components With Browserify](http://www.kellyjandrews.com/2015/04/01/modular-react-components-with-browserify.html)
 3. [Data Driven React Components](http://www.kellyjandrews.com/2015/04/08/data-driven-react-components.html)
@@ -28,7 +28,7 @@ If you have any issues, comments, or suggestions, feel free to submit a [GitHub 
 **Kelly Andrews**
 
 + [github/kellyjandrews](https://github.com/kellyjandrews)
-+ [twitter/kellyjandrews](http://twitter.com/kellyjandrews) 
++ [twitter/kellyjandrews](http://twitter.com/kellyjandrews)
 
 ## License
 Copyright (c) 2015 Kelly J Andrews
