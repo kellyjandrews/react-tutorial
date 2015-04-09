@@ -12,10 +12,7 @@ import Data from '../data.js'
 class DataGrid extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {data: props.data, displayCount: 10, page: 1};
-  }
-  paginationHandler() {
-    console.log(this);
+    this.state = {data: props.data};
   }
   render() {
     return (
@@ -26,12 +23,7 @@ class DataGrid extends React.Component{
         <div className="dataTable">
           <DataTable rows={this.state.data}/>
         </div>
-          <Pagination
-            count={this.state.data.length}
-            page={this.state.page}
-            displayCount={this.state.displayCount}
-            callback={this.paginationHandler}
-          />
+          <Pagination />
       </div>
     );
   }
