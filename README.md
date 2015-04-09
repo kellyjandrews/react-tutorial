@@ -23,5 +23,15 @@ Chrome should open a browser window with the data grid loaded.
 
 If you have any issues, comments, or suggestions, feel free to submit a [GitHub issue](https://github.com/kellyjandrews/react-tutorial/issues).
 
-<a href="https://twitter.com/kellyjandrews" class="twitter-follow-button" data-show-count="false">Follow @kellyjandrews</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+## Author
+
+**Kelly Andrews**
+
++ [github/kellyjandrews](https://github.com/kellyjandrews)
++ [twitter/kellyjandrews](http://twitter.com/kellyjandrews) 
+
+## License
+Copyright (c) 2015 Kelly J Andrews
+Released under the MIT license
+
+***
