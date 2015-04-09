@@ -2,68 +2,24 @@ import React from 'react';
 
 class DataTable extends React.Component{
   render() {
+    var dataRows = this.props.rows.map(function (row, key){
+      return(
+        <tr key={key}>
+          <td className="col-xs-6">{row.firstName}</td>
+          <td className="col-xs-6">{row.lastName}</td>
+        </tr>
+      )
+    });
     return (
-      <table className="table table-striped table-condensed table-bordered">
+      <table className="table table-fixed table-bordered">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th className="col-xs-6">First Name</th>
+            <th className="col-xs-6">Last Name</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Kelly</td>
-            <td>Andrews</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
-
-          <tr>
-            <td>John</td>
-            <td>Smith</td>
-          </tr>
+          {dataRows}
         </tbody>
       </table>
     );

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="build/js/vendors.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <style>
   body { margin-top: 25px;}
@@ -15,6 +15,11 @@
   .pageControls .glyphicon {top:0;}
   .dataTable {max-height: 300px; overflow:scroll; margin-bottom:10px; border: 1px solid #ccc;}
   .dataTable table {margin-bottom:0;}
+  .table-fixed thead {width: 100%;}
+  .table-fixed thead th {background-color:#ccc;}
+  .table-fixed tbody {height: 230px; overflow-y: auto; width: 100%;}
+  .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {display: block;}
+  .table-fixed tbody td, .table-fixed thead > tr> th {float: left; border-bottom-width: 0;}
   </style>
   <body>
     <div class="container">

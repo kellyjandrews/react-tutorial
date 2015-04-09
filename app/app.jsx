@@ -7,7 +7,16 @@ import jQuery from 'jquery';
 global.jQuery = jQuery;
 import bootstrap from 'bootstrap';
 
+import Data from '../data.js'
+
 class DataGrid extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {data: props.data, displayCount: 10, page: 1};
+  }
+  paginationHandler() {
+    console.log(this);
+  }
   render() {
     return (
       <div>
@@ -15,12 +24,17 @@ class DataGrid extends React.Component{
           <TitleBar />
         </div>
         <div className="dataTable">
-          <DataTable />
+          <DataTable rows={this.state.data}/>
         </div>
-          <Pagination />
+          <Pagination
+            count={this.state.data.length}
+            page={this.state.page}
+            displayCount={this.state.displayCount}
+            callback={this.paginationHandler}
+          />
       </div>
     );
   }
 };
 
-React.render(<DataGrid />, document.getElementById('dataGrid'));
+React.render(<DataGrid data={Data} />, document.getElementById('dataGrid'));
