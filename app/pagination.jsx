@@ -16,7 +16,7 @@ class Pagination extends React.Component{
     if (props.page === props.pageOptions[0]) {
       buttonStates.prev = false;
     }
-    
+
     if (props.page === props.pageOptions[props.pageOptions.length - 1]) {
       buttonStates.next = false;
     }
@@ -54,11 +54,9 @@ class Pagination extends React.Component{
   }
 };
 
-
-
 class DropDownMenu extends React.Component {
   handleClick(key) {
-    this.props.onChange(this.props.options[key],"something else");
+    this.props.onChange(this.props.options[key]);
   }
   render() {
     var optionList = this.props.options.map( function (option, key) {
