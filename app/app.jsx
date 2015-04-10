@@ -2,6 +2,7 @@ import React from 'react';
 import TitleBar from './title-bar';
 import DataTable from './datatable';
 import Pagination from './pagination';
+import _ from 'lodash';
 
 import jQuery from 'jquery';
 global.jQuery = jQuery;
@@ -12,11 +13,64 @@ import Data from '../data.js'
 class DataGrid extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {data: props.data, displayCount: 10, page: 1};
+
+    this.handlePagination = this.handlePagination.bind(this);
+    this.paginateData = this.paginateData.bind(this);
+    this.getStartEnd = this.getStartEnd.bind(this);
+
+    var startEnd = this.getStartEnd(props);
+
+    this.state = {
+      count: props.data.length,
+      data: this.paginateData(startEnd.itemStart, startEnd.itemEnd),
+      displayCount: props.displayCount,
+      itemStart: startEnd.itemStart,
+      itemEnd: startEnd.itemEnd,
+      page: props.page,
+      pageOptions: this.getPageOptions(props.data.length, props.displayCount)
+    };
   }
-  paginationHandler() {
-    console.log(this);
+
+  paginateData(start, end) {
+    return this.props.data.slice(start - 1, end);
   }
+
+  getStartEnd(state) {
+    var highestItem = state.page * state.displayCount;
+    var result = {};
+    result.itemStart = ((state.page - 1) * state.displayCount) + 1;
+    result.itemEnd = (highestItem <= this.props.data.length) ? highestItem : this.props.data.length;
+    return result;
+  }
+
+  handlePagination(setting) {
+    var nextState = _.assign({}, this.state, setting);
+
+    if (nextState.displayCount != this.state.displayCount) {
+      nextState.pageOptions = this.getPageOptions(this.props.data.length, nextState.displayCount);
+      if (nextState.page > nextState.pageOptions.slice(-1)[0]) {
+        nextState.page = nextState.pageOptions.slice(-1)[0];
+      }
+    }
+
+    nextState = _.assign(nextState, this.getStartEnd(nextState));
+    nextState.data = this.paginateData(nextState.itemStart, nextState.itemEnd);
+
+    this.setState(nextState);
+  }
+
+  getPageOptions(count, displayCount) {
+    var options = new Array(Math.ceil(count / displayCount));
+    var i = 0;
+    var a = options.length;
+    while(i < a){
+      options[i] = i+1;
+      i++;
+    }
+
+    return options;
+  }
+
   render() {
     return (
       <div>
@@ -27,14 +81,25 @@ class DataGrid extends React.Component{
           <DataTable rows={this.state.data}/>
         </div>
           <Pagination
-            count={this.state.data.length}
+            count={this.state.count}
             page={this.state.page}
             displayCount={this.state.displayCount}
-            callback={this.paginationHandler}
+            itemStart = {this.state.itemStart}
+            itemEnd = {this.state.itemEnd}
+            pageOptions = {this.state.pageOptions}
+            displayCountOptions = {this.props.displayCountOptions}
+            onChange={this.handlePagination}
           />
       </div>
     );
   }
 };
+
+DataGrid.defaultProps = {
+  displayCount: 10,
+  page: 1,
+  displayCountOptions : [10,25],
+  itemStart : 1
+}
 
 React.render(<DataGrid data={Data} />, document.getElementById('dataGrid'));

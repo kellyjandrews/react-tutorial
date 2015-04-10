@@ -3,41 +3,48 @@ import React from 'react';
 class Pagination extends React.Component{
   constructor(props) {
     super(props);
-    var pageOptions = function() {
-      var result = new Array(Math.ceil(props.count / props.displayCount));
-      var i = 0;
-      var a = result.length;
-      while(i < a){
-        result[i] = i+1;
-        i++;
-      }
-      return result;
-    }();
-    console.log(pageOptions);
-    this.state = {
-      itemStart: ((props.page - 1) * props.displayCount) + 1,
-      itemEnd: props.page * props.displayCount,
-      pageOptions: pageOptions
+    this.buttonStates = this.buttonStates.bind(this);
+    this.state = this.buttonStates(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.buttonStates(nextProps));
+  }
+
+  buttonStates(props) {
+    var buttonStates = {prev: true, next: true};
+    if (props.page === props.pageOptions[0]) {
+      buttonStates.prev = false;
     }
+    
+    if (props.page === props.pageOptions[props.pageOptions.length - 1]) {
+      buttonStates.next = false;
+    }
+
+    return buttonStates;
   }
-  updatePage(page) {
-    this.props.callback({"page": page});
+
+  updateSettings(type, value) {
+    var setting = {};
+    setting[type] = value
+    this.props.onChange(setting);
   }
+
   render() {
     return (
       <div className="well">
           <div className="row">
           <div className="col-md-6">
-            <strong>{this.state.itemStart}</strong> - <strong>{this.state.itemEnd}</strong> items out of <strong>{this.props.count}</strong>
+            <strong>{this.props.itemStart}</strong> - <strong>{this.props.itemEnd}</strong> items out of <strong>{this.props.count}</strong>
           </div>
           <div className="col-md-6">
             <div className="pageControls pull-right">
-              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-left"></button>
-              <DropDownMenu value={this.props.page} options={this.state.pageOptions} callback={this.updatePage} />
-              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-right"></button>
+              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-left" onClick={this.updateSettings.bind(this,"page",this.props.page - 1)} disabled={!this.state.prev} />
+              <DropDownMenu value={this.props.page} options={this.props.pageOptions} ref="page" onChange={this.updateSettings.bind(this, "page")} />
+              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-right" onClick={this.updateSettings.bind(this,"page", this.props.page + 1)} disabled={!this.state.next} />
             </div>
             <div className="itemOption pull-right">
-              <DropDownMenu value={this.props.displayCount} options={[10,25]} />
+              <DropDownMenu value={this.props.displayCount} options={this.props.displayCountOptions} ref="displayCount" onChange={this.updateSettings.bind(this, "displayCount")} />
             </div>
           </div>
           <div className="clearfix"></div>
@@ -47,13 +54,11 @@ class Pagination extends React.Component{
   }
 };
 
+
+
 class DropDownMenu extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {currentValue: this.props.value};
-  }
-  handleClick(i) {
-    this.props.callback(this.props.options[i]);
+  handleClick(key) {
+    this.props.onChange(this.props.options[key],"something else");
   }
   render() {
     var optionList = this.props.options.map( function (option, key) {
@@ -64,7 +69,7 @@ class DropDownMenu extends React.Component {
     return(
       <div className="btn-group">
         <button type="button" className="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-          {this.state.currentValue} <span className="caret"></span>
+          {this.props.value} <span className="caret"></span>
         </button>
         <ul className="dropdown-menu" role="menu">
           {optionList}
@@ -73,14 +78,5 @@ class DropDownMenu extends React.Component {
     );
   }
 };
-
-// <button type="button" className="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
-//   {this.props.displayCount} <span className="caret"></span>
-// </button>&nbsp;items/page&nbsp;&nbsp;&nbsp;|&nbsp;
-// <ul className="dropdown-menu" role="menu">
-//   <li><a href="#">10</a></li>
-//   <li><a href="#">25</a></li>
-// </ul>
-// </div>
 
 export default Pagination;
