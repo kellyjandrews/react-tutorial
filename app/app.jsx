@@ -13,10 +13,6 @@ import Data from '../data.js'
 class DataGrid extends React.Component{
   constructor(props) {
     super(props);
-<<<<<<< HEAD
-    this.state = {data: props.data};
-=======
-
     this.handlePagination = this.handlePagination.bind(this);
     this.paginateData = this.paginateData.bind(this);
     this.getStartEnd = this.getStartEnd.bind(this);
