@@ -3,7 +3,6 @@ import React from 'react';
 class Pagination extends React.Component{
   constructor(props) {
     super(props);
-    this.buttonStates = this.buttonStates.bind(this);
     this.state = this.buttonStates(props);
   }
 

@@ -31,8 +31,27 @@ class DataGrid extends React.Component{
     };
   }
 
-  paginateData(start, end) {
-    return this.props.data.slice(start - 1, end);
+  handlePagination(setting) {
+    var nextState = _.assign({}, this.state, setting);
+
+    if (nextState.displayCount != this.state.displayCount) {
+      nextState.pageOptions = this.getPageOptions(this.props.data.length, nextState.displayCount);
+
+      var that = this;
+      nextState.pageOptions.every(function(option){
+        if (that.state.itemStart < option * nextState.displayCount) {
+          nextState.page = option;
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+
+    nextState = _.assign(nextState, this.getStartEnd(nextState));
+    nextState.data = this.paginateData(nextState.itemStart, nextState.itemEnd);
+
+    this.setState(nextState);
   }
 
   getStartEnd(state) {
@@ -43,22 +62,6 @@ class DataGrid extends React.Component{
     return result;
   }
 
-  handlePagination(setting) {
-    var nextState = _.assign({}, this.state, setting);
-
-    if (nextState.displayCount != this.state.displayCount) {
-      nextState.pageOptions = this.getPageOptions(this.props.data.length, nextState.displayCount);
-      if (nextState.page > nextState.pageOptions.slice(-1)[0]) {
-        nextState.page = nextState.pageOptions.slice(-1)[0];
-      }
-    }
-
-    nextState = _.assign(nextState, this.getStartEnd(nextState));
-    nextState.data = this.paginateData(nextState.itemStart, nextState.itemEnd);
-
-    this.setState(nextState);
-  }
-
   getPageOptions(count, displayCount) {
     var options = new Array(Math.ceil(count / displayCount));
     var i = 0;
@@ -67,8 +70,11 @@ class DataGrid extends React.Component{
       options[i] = i+1;
       i++;
     }
-
     return options;
+  }
+
+  paginateData(start, end) {
+    return this.props.data.slice(start - 1, end);
   }
 
   render() {
@@ -99,7 +105,6 @@ DataGrid.defaultProps = {
   displayCount: 10,
   page: 1,
   displayCountOptions : [10,25],
-  itemStart : 1
 }
 
 React.render(<DataGrid data={Data} />, document.getElementById('dataGrid'));
