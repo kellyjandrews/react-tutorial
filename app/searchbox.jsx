@@ -11,6 +11,7 @@ class SearchBox extends React.Component{
   }
 
   static filterData(data,filter) {
+    if (filter === "" || !filter) {return data};
     return (
       data.filter(function(o) {
         return (

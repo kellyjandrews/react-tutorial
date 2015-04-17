@@ -17,7 +17,6 @@ class DataGrid extends React.Component{
     this.handleData = this.handleData.bind(this);
 
     this.state = {
-      data:(props.searchTerm != "") ? SearchBox.filterData(props.data, props.searchTerm) : props.data,
       page: this.props.page,
       displayCount: this.props.displayCount,
       searchTerm: props.searchTerm
@@ -26,20 +25,13 @@ class DataGrid extends React.Component{
   }
 
   handleData(setting) {
-    var nextState = _.assign({}, this.state, setting);
-
-    if (nextState.searchTerm != this.state.searchTerm) {
-      nextState.data = SearchBox.filterData(this.props.data, nextState.searchTerm)
-    }
-
-    nextState.page = Pagination.getCurrentPage(nextState, this.state);
-
-    this.setState(nextState);
+    this.setState(_.assign({}, this.state, setting));
   }
 
   render() {
 
-    var paginated = Pagination.pageData(this.state);
+    var filteredData = SearchBox.filterData(this.props.data, this.state.searchTerm);
+    var paginated = Pagination.pageData(filteredData, this.state);
 
     return (
       <div>
@@ -56,8 +48,6 @@ class DataGrid extends React.Component{
         </div>
           <Pagination
             paginatedProps={paginated.paginatedProps}
-            page={this.state.page}
-            displayCount={this.state.displayCount}
             onChange={this.handleData}
           />
       </div>

@@ -12,55 +12,46 @@ class Pagination extends React.Component{
     this.props.onChange(setting);
   }
 
-  static pageData(o) {
-    let requires = ['data', 'page', 'displayCount'];
-    if (!requires.every(function(p) { return p in o; })) {
-      throw new Error("Pagination.pageData() expects an object with the properties 'data', 'page', 'displayCount'. Ensure the proper data is being passed.");
+  componentWillUpdate(nextProps) {
+    if (this.props.paginatedProps.total !== nextProps.paginatedProps.total) {
+      this.props.onChange({'page' : 1});
     }
 
-    return new PagedData(o);
-
+    if (nextProps.paginatedProps.displayCount !== this.props.paginatedProps.displayCount) {
+      var i = 1;
+      while(this.props.paginatedProps.itemStart > i * nextProps.paginatedProps.displayCount) { i++; };
+      this.props.onChange({'page' : i});
+    }
   }
 
-  static getCurrentPage(next, last) {
-    let page = next.page;
-    let requires = ['data', 'page', 'displayCount'];
-    if (!requires.every(function(p) { return p in next; }) ||
-        !requires.every(function(p) { return p in last; })
-       ) {
-      throw new Error("Pagination.currentPage() expects two objects with the properties 'data', 'page', 'displayCount'. Ensure the proper data is being passed.");
+  static pageData(d, o) {
+    let requires = ['page', 'displayCount'];
+    if (!requires.every(function(p) { return p in o; })) {
+      throw new Error("Pagination.pageData() expects an object with the properties 'page', 'displayCount' as it's second parameter. Ensure the proper data is being passed.");
     }
 
-    if (next.data.length != last.data.length) {
-      page = 1;
-    }
-    if (next.displayCount != last.displayCount) {
-      let currStart = PagedData.getStart(last.data.length, last.page, last.displayCount);
-      var i = 1;
-      while(currStart > i*next.displayCount) { i++; };
-      page = i;
-    }
+    return new PagedData(d,o);
 
-    return page
   }
 
   render() {
-    var prev = this.props.page === this.props.paginatedProps.pageOptions[0];
-    var next = this.props.page === this.props.paginatedProps.pageOptions[this.props.paginatedProps.pageOptions.length - 1];
+    let o = this.props.paginatedProps;
+    let prev = o.page === o.pageOptions[0];
+    let next = o.page === o.pageOptions[o.pageOptions.length - 1];
     return (
       <div className="well">
           <div className="row">
           <div className="col-md-6">
-            <strong>{this.props.paginatedProps.itemStart}</strong> - <strong>{this.props.paginatedProps.itemEnd}</strong> items out of <strong>{this.props.paginatedProps.total}</strong>
+            <strong>{o.itemStart}</strong> - <strong>{this.props.paginatedProps.itemEnd}</strong> items out of <strong>{this.props.paginatedProps.total}</strong>
           </div>
           <div className="col-md-6">
             <div className="pageControls pull-right">
-              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-left" onClick={this.updateSettings.bind(this,"page",this.props.page - 1)} disabled={prev} />
-              <DropDownMenu value={this.props.page} options={this.props.paginatedProps.pageOptions} ref="page" onChange={this.updateSettings.bind(this, "page")} />
-              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-right" onClick={this.updateSettings.bind(this,"page", this.props.page + 1)} disabled={next} />
+              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-left" onClick={this.updateSettings.bind(this,"page",o.page - 1)} disabled={prev} />
+              <DropDownMenu value={o.page} options={o.pageOptions} ref="page" onChange={this.updateSettings.bind(this, "page")} />
+              <button className="btn btn-xs btn-default glyphicon glyphicon-triangle-right" onClick={this.updateSettings.bind(this,"page", o.page + 1)} disabled={next} />
             </div>
             <div className="itemOption pull-right">
-              <DropDownMenu value={this.props.displayCount} options={this.props.displayCountOptions} ref="displayCount" onChange={this.updateSettings.bind(this, "displayCount")} />
+              <DropDownMenu value={o.displayCount} options={this.props.displayCountOptions} ref="displayCount" onChange={this.updateSettings.bind(this, "displayCount")} />
             </div>
           </div>
           <div className="clearfix"></div>
@@ -75,14 +66,16 @@ Pagination.defaultProps = {
 }
 
 class PagedData {
-  constructor(o) {
+  constructor(d, o) {
     var r = {paginatedProps:{}, paginatedData:[]};
 
-    r.paginatedProps.total = o.data.length;
+    r.paginatedProps.total = d.length;
     r.paginatedProps.itemStart = PagedData.getStart(r.paginatedProps.total, o.page, o.displayCount);
     r.paginatedProps.itemEnd = PagedData.getEnd(r.paginatedProps.total, o.page, o.displayCount);
     r.paginatedProps.pageOptions = PagedData.getPageOptions(r.paginatedProps.total, o.displayCount);
-    r.paginatedData = PagedData.splitData(o.data, r.paginatedProps.itemStart, r.paginatedProps.itemEnd);
+    r.paginatedProps.page = o.page;
+    r.paginatedProps.displayCount = o.displayCount;
+    r.paginatedData = PagedData.splitData(d, r.paginatedProps.itemStart, r.paginatedProps.itemEnd);
 
     return Object.freeze(r);
   }
