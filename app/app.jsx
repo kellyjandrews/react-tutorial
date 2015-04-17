@@ -25,7 +25,7 @@ class DataGrid extends React.Component{
   }
 
   handleData(setting) {
-    this.setState(_.assign({}, this.state, setting));
+    this.setState(setting);
   }
 
   render() {
@@ -48,7 +48,7 @@ class DataGrid extends React.Component{
         </div>
           <Pagination
             paginatedProps={paginated.paginatedProps}
-            onChange={this.handleData}
+            onChange={this.setState}
           />
       </div>
     );
@@ -56,6 +56,7 @@ class DataGrid extends React.Component{
 };
 
 DataGrid.defaultProps = {
+  data: [],
   displayCount: 10,
   page: 1,
   searchTerm: ""
