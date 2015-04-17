@@ -82,15 +82,15 @@ class PagedData {
   static splitData(d, s, e) {
     return d.slice(s - 1, e);
   }
-  static getStart(c, p, d) {
-    return (c > 0) ? ((p - 1) * d) + 1 : 0;
+  static getStart(t, p, d) {
+    return (t > 0) ? ((p - 1) * d) + 1 : 0;
   }
   static getEnd(c, p, d) {
     var h = p * d;
     return (h <= c) ? h : c;
   }
-  static getPageOptions(c, d) {
-    var o = new Array(Math.ceil(c / d));
+  static getPageOptions(t, d) {
+    var o = new Array(Math.ceil(t / d));
     var i = 0;
     var a = o.length;
     while(i < a){
