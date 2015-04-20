@@ -14,18 +14,12 @@ class DataGrid extends React.Component{
   constructor(props) {
     super(props);
 
-    this.handleData = this.handleData.bind(this);
-
     this.state = {
-      page: this.props.page,
-      displayCount: this.props.displayCount,
+      page: props.page,
+      displayCount: props.displayCount,
       searchTerm: props.searchTerm
     };
 
-  }
-
-  handleData(setting) {
-    this.setState(setting);
   }
 
   render() {
@@ -40,7 +34,7 @@ class DataGrid extends React.Component{
             <h2>My Contacts</h2>
           </div>
           <div className="col-md-6 searchBox">
-            <SearchBox onChange={this.handleData} searchTerm={this.state.searchTerm} />
+            <SearchBox onChange={this.setState.bind(this)} searchTerm={this.state.searchTerm} />
           </div>
         </div>
         <div className="dataTable">
@@ -48,7 +42,7 @@ class DataGrid extends React.Component{
         </div>
           <Pagination
             paginatedProps={paginated.paginatedProps}
-            onChange={this.setState}
+            onChange={this.setState.bind(this)}
           />
       </div>
     );
