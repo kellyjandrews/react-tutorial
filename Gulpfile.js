@@ -10,7 +10,8 @@ var gulp = require('gulp'),
 var vendors = [
   'react',
   'bootstrap',
-  'jquery'
+  'jquery',
+  'lodash'
 ];
 
 

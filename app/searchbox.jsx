@@ -16,7 +16,7 @@ class SearchBox extends React.Component{
       data.filter(function(o) {
         return (
           Object.keys(o).some(function(v, i) {
-            return o[v].includes(filter.toLowerCase());
+            return o[v].toLowerCase().includes(filter.toLowerCase());
           })
         )
       })

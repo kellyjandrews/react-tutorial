@@ -3,10 +3,12 @@ import SearchBox from './searchbox';
 import DataTable from './datatable';
 import Pagination from './pagination';
 import _ from 'lodash';
-
+global._ = _;
 import jQuery from 'jquery';
 global.jQuery = jQuery;
 import bootstrap from 'bootstrap';
+
+
 
 import Data from '../data.js'
 
@@ -17,15 +19,18 @@ class DataGrid extends React.Component{
     this.state = {
       page: props.page,
       displayCount: props.displayCount,
-      searchTerm: props.searchTerm
+      searchTerm: props.searchTerm,
+      sort: props.sort
     };
 
   }
 
   render() {
+    console.log("rendering");
 
     var filteredData = SearchBox.filterData(this.props.data, this.state.searchTerm);
-    var paginated = Pagination.pageData(filteredData, this.state);
+    var sortedData = DataTable.sortData(filteredData, this.state.sort);
+    var paginated = Pagination.pageData(sortedData, this.state);
 
     return (
       <div>
@@ -38,7 +43,12 @@ class DataGrid extends React.Component{
           </div>
         </div>
         <div className="dataTable">
-          <DataTable rows={paginated.paginatedData}/>
+          <DataTable
+            rows={paginated.paginatedData}
+            cols={[{"lastName":"Last Name"},{"city":"City"}]}
+            onChange={this.setState.bind(this)}
+            sort={this.state.sort}
+          />
         </div>
           <Pagination
             paginatedProps={paginated.paginatedProps}
@@ -53,7 +63,8 @@ DataGrid.defaultProps = {
   data: [],
   displayCount: 10,
   page: 1,
-  searchTerm: ""
+  searchTerm: "",
+  sort: {}
 }
 
 React.render(<DataGrid data={Data} />, document.getElementById('dataGrid'));
